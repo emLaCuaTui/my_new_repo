@@ -3,7 +3,7 @@ equal_parts=[]
 def average(half):
     total = 0
     for value in half:
-        total+=value
+        total+=value*5
     return total/len(half)
 
 X= [1,2,3,4,5,6,7,8]
