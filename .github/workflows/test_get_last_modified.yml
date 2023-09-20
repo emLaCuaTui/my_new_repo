@@ -1,0 +1,36 @@
+on:
+  push:
+    branches:
+      - 'new_new_branch'
+    path:
+      - test_get_last_modified/**
+  pull_request:
+      types:
+       - closed
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+  AWS_DEFAULT_OUTPUT: json
+  LAMBDA_FUNCTION_NAME: test_get_last_modified
+  LAMBDA_RUNTIME: python3.9
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: current dir
+        run: |
+           pwd
+           ls -lrth;
+
+      - name: update the lambda code
+        run: |
+          echo "Deploying zip file to lambda"
+          cd $LAMBDA_FUNCTION_NAME
+          zip -r code.zip . -x \*.git\*
+          aws lambda update-function-code --function-name "${LAMBDA_FUNCTION_NAME}" --zip-file fileb://code.zip
+
