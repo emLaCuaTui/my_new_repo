@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - 'new_new_branch'
+      - 'main'
     path:
       - test_get_last_modified/**
   pull_request:
