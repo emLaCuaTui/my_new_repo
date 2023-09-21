@@ -12,7 +12,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-  AWS_DEFAULT_OUTPUT: ${{ secrets.AWS_DEFAULT_OUTPUT}}
+  AWS_DEFAULT_OUTPUT: json
   GLUE_JOB_NAME: test_ci_cd
   S3_PATH: s3://aws-glue-assets-735206531520-ap-northeast-1/scripts/test_ci_cd.py
   SCRIPT_RUNTIME: python3.9
