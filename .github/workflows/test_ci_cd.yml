@@ -1,0 +1,32 @@
+on:
+  push:
+    branches:
+      - 'main'
+    path:
+      - 'glue test/**'
+  pull request:
+    types:
+      - closed
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+  AWS_DEFAULT_OUTPUT: ${{ secrets.AWS_DEFAULT_OUTPUT}}
+  GLUE_JOB_NAME: test_ci_cd
+  S3_PATH: s3://aws-glue-assets-735206531520-ap-northeast-1/scripts/test_ci_cd.py
+  SCRIPT_RUNTIME: python3.9
+  GLUE_SCRIPT_ROLE_NAME: AmazonSageMakerServiceCatalogProductsUseRole
+
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses:  actions/checkout@v2
+
+      - name: update glue job script
+      - run: |
+          cd "glue test"
+          aws s3 cp test_ci_cd.py "${S3_PATH}"
+          aws glue update-job  --job-name "${GLUE_JOB_NAME}" --job-update Role="${GLUE_SCRIPT_ROLE_NAME}",Command="{Name=Update,ScriptLocation=${S3_PATH}}"
